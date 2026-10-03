@@ -1,0 +1,311 @@
+<!-- Copyright (c) [2025] [René Peña Martínez]. Licensed under CC BY 4.0. -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Consulta de Perros - The Dog API</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-container">
+
+      <h1>Portal web de Consulta de Razas de Perros</h1>
+
+      <h1>Práctica de Angel Leonel Morales Arzate</h1>
+
+      <p class="subtitle">
+        Aplicación web para consumir el servicio REST de The Dog API.
+      </p>
+
+    </div>
+  </header>
+
+
+  <main class="main-container">
+
+    <!-- PANEL DE CONTROL -->
+
+    <section class="search-panel">
+
+      <h2>Opciones de consulta</h2>
+
+      <p class="instructions">
+        Seleccione una raza predeterminada o ingrese una raza específica para consultar información.
+      </p>
+
+
+      <!-- BOTONES DE RAZAS -->
+
+      <div class="category-buttons" id="quickOptions">
+
+        <button type="button"
+                class="btn-category active"
+                data-query="labrador">
+          Labrador
+        </button>
+
+        <button type="button"
+                class="btn-category"
+                data-query="german shepherd">
+          Pastor Alemán
+        </button>
+
+        <button type="button"
+                class="btn-category"
+                data-query="golden retriever">
+          Golden Retriever
+        </button>
+
+        <button type="button"
+                class="btn-category"
+                data-query="bulldog">
+          Bulldog
+        </button>
+
+        <button type="button"
+                class="btn-category"
+                data-query="husky">
+          Husky
+        </button>
+
+        <button type="button"
+                class="btn-category"
+                data-query="chihuahua">
+          Chihuahua
+        </button>
+
+      </div>
+
+
+      <!-- FORMULARIO -->
+
+      <form id="searchForm" class="search-form">
+
+        <div class="form-group">
+
+          <label for="queryInput">
+            Raza de perro:
+          </label>
+
+          <input
+            type="text"
+            id="queryInput"
+            name="query"
+            value="labrador"
+            placeholder="Ingrese una raza. Ej. Labrador, Husky, Poodle... (vacío = todas)"
+            autocomplete="off"
+          >
+
+        </div>
+
+
+
+        <div class="filters">
+
+          <div class="form-group">
+            <label for="sizeFilter">Clasificar por tamaño:</label>
+            <select id="sizeFilter">
+              <option value="">Todos los tamaños</option>
+              <option value="Pequeño">Pequeño (hasta 10 kg)</option>
+              <option value="Mediano">Mediano (11 a 25 kg)</option>
+              <option value="Grande">Grande (26 a 40 kg)</option>
+              <option value="Gigante">Gigante (más de 40 kg)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="temperamentFilter">Clasificar por temperamento:</label>
+            <select id="temperamentFilter">
+              <option value="">Todos los temperamentos</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <div class="preview-text">
+
+            Consulta seleccionada:
+
+            <strong id="queryPreviewText">
+              "labrador"
+            </strong>
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="btnSubmit"
+            class="btn-submit">
+
+            Procesar Solicitud
+
+          </button>
+
+        </div>
+
+      </form>
+
+
+      <!-- INFORMACIÓN DEL ENDPOINT -->
+
+      <div class="technical-info">
+
+        <strong>URL del endpoint HTTP:</strong>
+
+        <span id="apiEndpointUrl">
+          https://api.thedogapi.com/v1/breeds
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- ESTADO -->
+
+    <div
+      id="statusContainer"
+      class="status-box"
+      style="display: none;">
+
+      <p id="statusMessage">
+        Consultando información de perros...
+      </p>
+
+    </div>
+
+
+    <!-- RESULTADOS -->
+
+    <section class="results-panel">
+
+      <div class="results-header">
+
+        <h2>
+          Resultados de la búsqueda
+        </h2>
+
+        <span
+          id="resultsCount"
+          class="results-counter">
+
+          0 perros encontrados
+
+        </span>
+
+      </div>
+
+
+      <div
+        id="resultsGrid"
+        class="results-grid">
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- MODAL -->
+
+  <dialog
+    id="imageModal"
+    class="detail-modal">
+
+    <div class="modal-content">
+
+      <button
+        type="button"
+        id="closeModalBtn"
+        class="btn-close">
+
+        Cerrar [X]
+
+      </button>
+
+
+      <div class="modal-body">
+
+        <img
+          id="modalImage"
+          src=""
+          alt="Imagen del perro">
+
+
+        <h3 id="modalTitle"></h3>
+
+
+        <div class="modal-info">
+
+          <p>
+            <strong>Temperamento:</strong>
+            <span id="modalTemperament"></span>
+          </p>
+
+
+          <p>
+            <strong>Tamaño:</strong>
+            <span id="modalSize"></span>
+          </p>
+
+
+          <p>
+            <strong>Altura:</strong>
+            <span id="modalHeight"></span>
+          </p>
+
+
+          <p>
+            <strong>Peso:</strong>
+            <span id="modalWeight"></span>
+          </p>
+
+
+          <p>
+            <strong>Origen:</strong>
+            <span id="modalOrigin"></span>
+          </p>
+
+
+          <p>
+            <strong>Grupo:</strong>
+            <span id="modalGroup"></span>
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </dialog>
+
+
+  <footer class="footer">
+
+    <p>
+      Proyecto académico de ITIID de la UTVT a cargo del Mtro. René Peña.
+      Consumo de APIs REST con JavaScript nativo.
+    </p>
+
+    <p>
+      Datos proporcionados por The Dog API.
+    </p>
+
+  </footer>
+
+
+  <script src="js/app.js"></script>
+
+</body>
+</html>
